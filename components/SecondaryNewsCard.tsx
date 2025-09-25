@@ -16,13 +16,15 @@ export default function SecondaryNewsCard({
   return (
     <article className="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-200">
       <div className="relative">
-        <Image
-          src={imageUrl}
-          alt={title}
-          width={400}
-          height={300}
-          className="w-full h-48 object-cover"
-        />
+        <a href="/noticia/leila-pereira-abel-ferreira-palmeiras">
+          <Image
+            src={imageUrl}
+            alt={title}
+            width={400}
+            height={300}
+            className="w-full h-48 object-cover hover:opacity-90 transition-opacity duration-200 cursor-pointer"
+          />
+        </a>
         
         {/* Category Badge */}
         <div className="absolute top-3 left-3">

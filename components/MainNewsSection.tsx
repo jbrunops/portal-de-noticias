@@ -14,8 +14,13 @@ export default function MainNewsSection() {
       <div className="lg:col-span-2">
         <div className="space-y-4">
           {/* Main Title */}
-          <h1 className="text-3xl lg:text-4xl font-bold text-cnn-dark leading-tight">
-            Após arquivamento de PEC da Blindagem, Lula diz que proposta era uma "vergonha nacional"
+          <h1 className="text-3xl lg:text-4xl font-bold leading-tight">
+            <a 
+              href="/noticia/pec-blindagem-lula-vergonha-nacional" 
+              className="text-cnn-dark hover:text-cnn-red transition-colors duration-200"
+            >
+              Após arquivamento de PEC da Blindagem, Lula diz que proposta era uma "vergonha nacional"
+            </a>
           </h1>
           
           {/* Related Items */}

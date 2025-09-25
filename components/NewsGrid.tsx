@@ -55,13 +55,15 @@ export default function NewsGrid() {
       {gridNewsItems.map((item, index) => (
         <article key={index} className="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
           <div className="relative">
-            <Image
-              src={item.imageUrl}
-              alt={item.title}
-              width={200}
-              height={150}
-              className="w-full h-32 object-cover"
-            />
+            <a href={`/noticia/${index + 1}`}>
+              <Image
+                src={item.imageUrl}
+                alt={item.title}
+                width={200}
+                height={150}
+                className="w-full h-32 object-cover hover:opacity-90 transition-opacity duration-200 cursor-pointer"
+              />
+            </a>
             
             {/* Category Badge */}
             <div className="absolute top-2 left-2">
