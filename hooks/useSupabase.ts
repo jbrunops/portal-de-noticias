@@ -1,27 +1,22 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
+import { 
+  mockNews, 
+  mockCategories, 
+  mockBloggers,
+  getAllNews,
+  getAllCategories,
+  getAllBloggers,
+  getNewsBySlug as mockGetNewsBySlug,
+  getFeaturedNews as mockGetFeaturedNews,
+  getMostReadNews as mockGetMostReadNews,
+  getNewsByCategory as mockGetNewsByCategory,
+  type NewsItem,
+  type Category,
+  type Blogger
+} from '@/lib/mockData'
 
-export interface NewsItem {
-  id: number
-  title: string
-  content: string
-  excerpt: string
-  category: string
-  author: string
-  publish_date: string
-  image_url: string
-  slug: string
-  is_featured: boolean
-  created_at: string
-  updated_at: string
-}
-
-export interface Category {
-  id: number
-  name: string
-  slug: string
-  color: string
-}
+export { type NewsItem, type Category, type Blogger }
 
 export function useNews() {
   const [news, setNews] = useState<NewsItem[]>([])
@@ -35,15 +30,23 @@ export function useNews() {
   const fetchNews = async () => {
     try {
       setLoading(true)
-      const { data, error } = await supabase
-        .from('news')
-        .select('*')
-        .order('publish_date', { ascending: false })
+      // Tentar buscar do Supabase primeiro, se falhar usar dados mock
+      try {
+        const { data, error } = await supabase
+          .from('news')
+          .select('*')
+          .order('publish_date', { ascending: false })
 
-      if (error) throw error
-      setNews(data || [])
+        if (error) throw error
+        setNews(data || [])
+      } catch (supabaseError) {
+        console.log('Usando dados mock devido a erro no Supabase:', supabaseError)
+        setNews(getAllNews())
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Erro ao carregar notícias')
+      // Fallback para dados mock
+      setNews(getAllNews())
     } finally {
       setLoading(false)
     }
@@ -51,6 +54,7 @@ export function useNews() {
 
   const getNewsBySlug = async (slug: string): Promise<NewsItem | null> => {
     try {
+      // Tentar Supabase primeiro
       const { data, error } = await supabase
         .from('news')
         .select('*')
@@ -60,8 +64,8 @@ export function useNews() {
       if (error) throw error
       return data
     } catch (err) {
-      console.error('Erro ao buscar notícia:', err)
-      return null
+      console.log('Usando dados mock para buscar notícia por slug')
+      return mockGetNewsBySlug(slug)
     }
   }
 
@@ -77,8 +81,8 @@ export function useNews() {
       if (error) throw error
       return data || []
     } catch (err) {
-      console.error('Erro ao buscar notícias em destaque:', err)
-      return []
+      console.log('Usando dados mock para notícias em destaque')
+      return mockGetFeaturedNews()
     }
   }
 
@@ -93,8 +97,8 @@ export function useNews() {
       if (error) throw error
       return data || []
     } catch (err) {
-      console.error('Erro ao buscar notícias mais lidas:', err)
-      return []
+      console.log('Usando dados mock para notícias mais lidas')
+      return mockGetMostReadNews()
     }
   }
 
@@ -109,8 +113,8 @@ export function useNews() {
       if (error) throw error
       return data || []
     } catch (err) {
-      console.error('Erro ao buscar notícias por categoria:', err)
-      return []
+      console.log('Usando dados mock para notícias por categoria')
+      return mockGetNewsByCategory(categorySlug)
     }
   }
 
@@ -137,19 +141,50 @@ export function useCategories() {
   const fetchCategories = async () => {
     try {
       setLoading(true)
-      const { data, error } = await supabase
-        .from('categories')
-        .select('*')
-        .order('name')
+      // Tentar Supabase primeiro
+      try {
+        const { data, error } = await supabase
+          .from('categories')
+          .select('*')
+          .order('name')
 
-      if (error) throw error
-      setCategories(data || [])
+        if (error) throw error
+        setCategories(data || [])
+      } catch (supabaseError) {
+        console.log('Usando dados mock para categorias')
+        setCategories(getAllCategories())
+      }
     } catch (err) {
       console.error('Erro ao carregar categorias:', err)
+      setCategories(getAllCategories())
     } finally {
       setLoading(false)
     }
   }
 
   return { categories, loading, fetchCategories }
+}
+
+export function useBloggers() {
+  const [bloggers, setBloggers] = useState<Blogger[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    fetchBloggers()
+  }, [])
+
+  const fetchBloggers = async () => {
+    try {
+      setLoading(true)
+      // Por enquanto usar apenas dados mock, pois não temos tabela de bloggers no Supabase
+      setBloggers(getAllBloggers())
+    } catch (err) {
+      console.error('Erro ao carregar blogueiros:', err)
+      setBloggers([])
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return { bloggers, loading, fetchBloggers }
 }
