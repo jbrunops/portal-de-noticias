@@ -38,12 +38,12 @@ export default function Header() {
             </button>
 
             {/* Logo Portal Cachoeirinha */}
-            <div className="bg-cnn-red px-4 py-2 ml-2 lg:ml-0">
+            <a href="/" className="bg-cnn-red px-4 py-2 ml-2 lg:ml-0 block hover:bg-red-700 transition-colors">
               <div className="flex flex-col">
-                <span className="text-xl font-bold tracking-tight">PORTAL</span>
-                <span className="text-xs font-normal tracking-wide">CACHOEIRINHA</span>
+                <span className="text-xl font-bold tracking-tight text-white">PORTAL</span>
+                <span className="text-xs font-normal tracking-wide text-white">CACHOEIRINHA</span>
               </div>
-            </div>
+            </a>
           </div>
 
           {/* Navegação desktop */}
