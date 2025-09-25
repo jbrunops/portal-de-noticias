@@ -5,15 +5,11 @@ import SecondaryNewsCard from '@/components/SecondaryNewsCard'
 import ThreeColumnNews from '@/components/ThreeColumnNews'
 import NewsGrid from '@/components/NewsGrid'
 import BlogsSection from '@/components/BlogsSection'
-import SupabaseTest from '@/components/SupabaseTest'
 
 export default function HomePage() {
   return (
     <Layout>
       <div className="space-y-6">
-        {/* Supabase Test - Temporário */}
-        <SupabaseTest />
-        
         {/* Breaking News */}
         <BreakingNews />
         
